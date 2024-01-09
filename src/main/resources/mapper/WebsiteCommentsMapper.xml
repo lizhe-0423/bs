@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lizhi.bs.mapper.WebsiteCommentsMapper">
+
+    <resultMap id="BaseResultMap" type="com.lizhi.bs.domain.WebsiteComments">
+            <id property="commentId" column="comment_id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="commentText" column="comment_text" jdbcType="VARCHAR"/>
+            <result property="parentCommentId" column="parent_comment_id" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        comment_id,user_id,comment_text,
+        parent_comment_id,create_time
+    </sql>
+</mapper>

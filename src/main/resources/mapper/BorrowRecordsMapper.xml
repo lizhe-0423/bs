@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lizhi.bs.mapper.BorrowRecordsMapper">
+
+    <resultMap id="BaseResultMap" type="com.lizhi.bs.domain.BorrowRecords">
+            <id property="borrowId" column="borrow_id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="bookId" column="book_id" jdbcType="INTEGER"/>
+            <result property="borrowDate" column="borrow_date" jdbcType="DATE"/>
+            <result property="returnDate" column="return_date" jdbcType="DATE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        borrow_id,user_id,book_id,
+        borrow_date,return_date
+    </sql>
+</mapper>

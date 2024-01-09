@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lizhi.bs.mapper.LibraryInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.lizhi.bs.domain.LibraryInfo">
+            <id property="infoId" column="info_id" jdbcType="INTEGER"/>
+            <result property="systemIntro" column="system_intro" jdbcType="VARCHAR"/>
+            <result property="announcement" column="announcement" jdbcType="VARCHAR"/>
+            <result property="rulesInfo" column="rules_info" jdbcType="VARCHAR"/>
+            <result property="publisher" column="publisher" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        info_id,system_intro,announcement,
+        rules_info,publisher,create_time,
+        update_time
+    </sql>
+</mapper>

@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    # 配置连接数据库信息
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bs?characterEncoding=utf8&useSSL=false
+    username: root
+    password: lizhe@0110266577
+server:
+  port: 8889
+  servlet:
+    context-path: "/api"
+easy-es:
+  address: 127.0.0.1:9221
+yuapi:
+  client:
+    access-key: wi2fl4nz538u2my31y72ly9n3o7ef0jx
+    secret-key: l2em830u6mag2xn0joznr2dq3bgdn2z1

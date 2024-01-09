@@ -1,0 +1,18 @@
+package com.lizhi.bs.mapper;
+
+import com.lizhi.bs.domain.BookChapters;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+/**
+* @author <a href="https://github.com/lizhe-0423">lizhi</a>
+* @description 针对表【book_chapters(图书章节表)】的数据库操作Mapper
+* @createDate 2024-01-02 09:46:24
+* @Entity generator.domain.BookChapters
+*/
+public interface BookChaptersMapper extends BaseMapper<BookChapters> {
+
+}
+
+
+
+

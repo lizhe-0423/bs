@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lizhi.bs.mapper.AiIntelligentMapper">
+
+    <resultMap id="BaseResultMap" type="com.lizhi.bs.domain.AiIntelligent">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="inputmessage" column="inputMessage" jdbcType="VARCHAR"/>
+            <result property="airesult" column="aiResult" jdbcType="VARCHAR"/>
+            <result property="userid" column="userId" jdbcType="BIGINT"/>
+            <result property="createtime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updatetime" column="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,inputMessage,aiResult,
+        userId,createTime,updateTime
+    </sql>
+</mapper>
