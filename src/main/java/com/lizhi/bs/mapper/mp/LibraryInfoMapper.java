@@ -1,4 +1,4 @@
-package com.lizhi.bs.mapper;
+package com.lizhi.bs.mapper.mp;
 
 import com.lizhi.bs.domain.LibraryInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  **/
 
 @Configuration
-@MapperScan("com.lizhi.bs.mapper")
+@MapperScan("com.lizhi.bs.mapper.mp")
 public class MyBatisPlusConfig {
 
     /**

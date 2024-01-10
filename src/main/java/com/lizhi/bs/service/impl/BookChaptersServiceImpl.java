@@ -2,7 +2,7 @@ package com.lizhi.bs.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lizhi.bs.domain.BookChapters;
-import com.lizhi.bs.mapper.BookChaptersMapper;
+import com.lizhi.bs.mapper.mp.BookChaptersMapper;
 import com.lizhi.bs.service.BookChaptersService;
 import org.springframework.stereotype.Service;
 

@@ -32,9 +32,9 @@ public class BooksSync implements CommandLineRunner {
         documentMapper.setCurrentActiveIndex("book_chapters");
 
         List<BookChapters> list = bookChaptersService.list();
-        Document document = new Document();
-
+        //将章节内容批量同步到es
         for (BookChapters bookChapters : list) {
+            Document document = new Document();
             document.setId(String.valueOf(bookChapters.getChapterId()));
             document.setBookName(booksService.getById(bookChapters.getBookId()).getBookName());
             document.setTitle(bookChapters.getChapterTitle());

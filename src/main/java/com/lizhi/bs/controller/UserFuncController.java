@@ -1,5 +1,7 @@
 package com.lizhi.bs.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckRole;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lizhi.bs.common.BasePageRequest;
 import com.lizhi.bs.common.BaseResponse;
@@ -18,7 +20,7 @@ import java.util.List;
 
 /**
  * {@code @name} bs
- * {@code @description}
+ * {@code @description} 用户功能
  *
  * @author <a href="https://github.com/lizhe-0423">荔枝程序员</a>
  * {@code @data} 2024 2024/1/2 19:23
@@ -26,7 +28,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @Slf4j
+@SaCheckLogin
+@SaCheckRole("reader")
 public class UserFuncController {
+    private static final Logger logger = LoggerFactory.getLogger(UserFuncController.class);
     @Resource
     private BooksServiceImpl booksService;
     @Resource
@@ -44,8 +49,6 @@ public class UserFuncController {
     @Resource
     private ViolationServiceImpl violationService;
 
-
-    private static final Logger logger = LoggerFactory.getLogger(UserFuncController.class);
 
     /**
      * 搜索图书
@@ -80,6 +83,12 @@ public class UserFuncController {
     }
 
 
+    /**
+     * 获取违章列表
+     *
+     * @param request BasePageRequest请求
+     * @return BaseResponse<Page < Violation>>
+     */
     @PostMapping("/getViolation")
     public BaseResponse<Page<Violation>> getViolation(@RequestBody BasePageRequest request) {
         return violationService.getViolation(request);
@@ -118,21 +127,35 @@ public class UserFuncController {
 
     /**
      * 调用AI模型，获取数据库中有的，并且推荐图书给用户
-     * @param request
-     * @return
+     *
+     * @param request AiIntelligent请求
+     * @return AI响应结果
      */
     @PostMapping("aiIntelligent")
-    public BaseResponse<String> aiIntelligent(@RequestBody AiIntelligent request){
-        logger.info("controller层:aiIntelligent->request入参={}",request);
+    public BaseResponse<String> aiIntelligent(@RequestBody AiIntelligent request) {
+        logger.info("controller层:aiIntelligent->request入参={}", request);
         return aiIntelligentService.aiIntelligent(request);
     }
+
+    /**
+     * 根据用户id获取AI模型推荐的图书
+     *
+     * @param userId 用户id
+     * @return BaseResponse<List < AiIntelligent>>
+     */
     @GetMapping("aiListInformation/{userId}")
-    public BaseResponse<List<AiIntelligent>> getAiInformationByUserId(@PathVariable("userId") Long userId){
+    public BaseResponse<List<AiIntelligent>> getAiInformationByUserId(@PathVariable("userId") Long userId) {
         return aiIntelligentService.getAiInformationByUserId(userId);
     }
 
+    /**
+     * 根据用户id获取借阅记录
+     *
+     * @param request BasePageRequest请求
+     * @return BaseResponse<Page < BorrowRecords>>
+     */
     @PostMapping("/getBookBorrow")
-    public BaseResponse<Page<BorrowRecords>> getBookBorrow(@RequestBody BasePageRequest request){
+    public BaseResponse<Page<BorrowRecords>> getBookBorrow(@RequestBody BasePageRequest request) {
         return borrowRecordsService.getBookBorrow(request);
     }
 

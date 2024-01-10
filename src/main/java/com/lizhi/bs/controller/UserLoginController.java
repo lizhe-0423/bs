@@ -6,7 +6,8 @@ import com.lizhi.bs.request.LoginRequest;
 import com.lizhi.bs.response.LoginResponse;
 import com.lizhi.bs.service.impl.UsersServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.mybatis.spring.annotation.MapperScan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +25,9 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/user")
-@MapperScan("com.lizhi.bs.mapper")
 @Slf4j
 public class UserLoginController {
+    private static final Logger logger = LoggerFactory.getLogger(UserLoginController.class);
     @Resource
     private UsersServiceImpl usersService;
 
@@ -37,7 +38,7 @@ public class UserLoginController {
      */
     @PostMapping("/login")
     public BaseResponse<LoginResponse> login(@RequestBody LoginRequest request) {
-        log.info("controller:LoginRequest={}",request);
+        logger.info("controller:LoginRequest={}",request);
         return usersService.userLogin(request);
     }
     /**
@@ -47,7 +48,7 @@ public class UserLoginController {
      */
     @PostMapping("/updatePassword")
     public BaseResponse<String> updatePassword(@RequestBody Users users) {
-        log.info("controller:Users={}",users);
+        logger.info("controller:Users={}",users);
         return usersService.updatePassword(users);
     }
 

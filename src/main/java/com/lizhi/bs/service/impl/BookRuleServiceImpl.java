@@ -1,14 +1,13 @@
 package com.lizhi.bs.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.lizhi.bs.common.BasePageRequest;
 import com.lizhi.bs.common.BaseResponse;
 import com.lizhi.bs.common.ErrorCode;
 import com.lizhi.bs.common.ResultUtils;
 import com.lizhi.bs.domain.BookRule;
 import com.lizhi.bs.exception.BusinessException;
 import com.lizhi.bs.service.BookRuleService;
-import com.lizhi.bs.mapper.BookRuleMapper;
+import com.lizhi.bs.mapper.mp.BookRuleMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

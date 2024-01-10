@@ -8,7 +8,7 @@ import com.lizhi.bs.common.BaseResponse;
 import com.lizhi.bs.common.ErrorCode;
 import com.lizhi.bs.domain.Violation;
 import com.lizhi.bs.exception.BusinessException;
-import com.lizhi.bs.mapper.ViolationMapper;
+import com.lizhi.bs.mapper.mp.ViolationMapper;
 import com.lizhi.bs.service.ViolationService;
 
 import org.springframework.stereotype.Service;

@@ -3,7 +3,7 @@ package com.lizhi.bs.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lizhi.bs.domain.LibraryRooms;
 import com.lizhi.bs.service.LibraryRoomsService;
-import com.lizhi.bs.mapper.LibraryRoomsMapper;
+import com.lizhi.bs.mapper.mp.LibraryRoomsMapper;
 import org.springframework.stereotype.Service;
 
 /**

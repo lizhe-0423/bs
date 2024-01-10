@@ -1,7 +1,6 @@
 package com.lizhi.bs.service.impl;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -10,7 +9,7 @@ import com.lizhi.bs.common.BaseResponse;
 import com.lizhi.bs.common.ResultUtils;
 import com.lizhi.bs.domain.Books;
 import com.lizhi.bs.domain.es.Document;
-import com.lizhi.bs.mapper.BooksMapper;
+import com.lizhi.bs.mapper.mp.BooksMapper;
 import com.lizhi.bs.mapper.es.DocumentMapper;
 import com.lizhi.bs.service.BooksService;
 import lombok.extern.slf4j.Slf4j;

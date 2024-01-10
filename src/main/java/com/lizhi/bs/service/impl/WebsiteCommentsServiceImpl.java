@@ -3,7 +3,7 @@ package com.lizhi.bs.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lizhi.bs.domain.WebsiteComments;
 import com.lizhi.bs.service.WebsiteCommentsService;
-import com.lizhi.bs.mapper.WebsiteCommentsMapper;
+import com.lizhi.bs.mapper.mp.WebsiteCommentsMapper;
 import org.springframework.stereotype.Service;
 
 /**

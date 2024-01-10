@@ -7,8 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 
+/**
+ * @author <a href="https://github.com/lizhe-0423">lizhi</a>
+ */
 @SpringBootApplication
-@MapperScan("com.lizhi.bs.mapper")
+@MapperScan("com.lizhi.bs.mapper.mp")
 @EsMapperScan("com.lizhi.bs.mapper.es")
 public class BsApplication {
 

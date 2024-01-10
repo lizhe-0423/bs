@@ -1,25 +1,21 @@
 package com.lizhi.bs.service.impl;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.date.LocalDateTimeUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lizhi.bs.common.BaseResponse;
 import com.lizhi.bs.common.ErrorCode;
 import com.lizhi.bs.common.ResultUtils;
 import com.lizhi.bs.domain.Comment;
 import com.lizhi.bs.exception.BusinessException;
-import com.lizhi.bs.mapper.CommentMapper;
+import com.lizhi.bs.mapper.mp.CommentMapper;
 import com.lizhi.bs.request.CommentRequest;
 import com.lizhi.bs.response.CommentResponse;
 import com.lizhi.bs.service.CommentService;
-import com.qcloud.cos.utils.DateUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author <a href="https://github.com/lizhe-0423">lizhi</a>
@@ -29,6 +25,9 @@ import java.util.stream.Collectors;
 @Service
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
         implements CommentService {
+
+    private static final int LONG_INDEX=10;
+
 
     @Override
     public BaseResponse<List<CommentResponse>> getCommentList() {
@@ -64,7 +63,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
         long index = Math.round(Math.random() * 10);
 
         //如果四舍五入后，下标越界，直接-1
-        if (index == 10) {
+        if (index == LONG_INDEX) {
             index = 9L;
         }
         String s = Long.toString(index);

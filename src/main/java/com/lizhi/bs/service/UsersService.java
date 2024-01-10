@@ -1,12 +1,10 @@
 package com.lizhi.bs.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.lizhi.bs.common.BaseResponse;
 import com.lizhi.bs.domain.Users;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.lizhi.bs.request.LoginRequest;
 import com.lizhi.bs.response.LoginResponse;
-
-import javax.xml.ws.Response;
 
 /**
  * @author <a href="https://github.com/lizhe-0423">lizhi</a>
@@ -47,9 +45,18 @@ public interface UsersService extends IService<Users> {
     BaseResponse<String> updatePassword(Users users);
 
     /**
-     * 获取用户信息
+     * 获取用户数据
      *
+     * @param users users
      * @return Users
      */
     BaseResponse<Users> getUserData(Users users);
+
+    /**
+     * 获取管理员数据
+     *
+     * @param users users
+     * @return Users
+     */
+    BaseResponse<Users> getAdminData(Users users);
 }

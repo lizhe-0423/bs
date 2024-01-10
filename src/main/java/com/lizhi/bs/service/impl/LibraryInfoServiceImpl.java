@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lizhi.bs.common.BaseResponse;
 import com.lizhi.bs.common.ResultUtils;
 import com.lizhi.bs.domain.LibraryInfo;
-import com.lizhi.bs.mapper.LibraryInfoMapper;
+import com.lizhi.bs.mapper.mp.LibraryInfoMapper;
 import com.lizhi.bs.service.LibraryInfoService;
 import org.springframework.stereotype.Service;
 

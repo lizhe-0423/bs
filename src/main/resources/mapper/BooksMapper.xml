@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lizhi.bs.mapper.BooksMapper">
+<mapper namespace="com.lizhi.bs.mapper.mp.BooksMapper">
 
     <resultMap id="BaseResultMap" type="com.lizhi.bs.domain.Books">
             <id property="bookId" column="book_id" jdbcType="INTEGER"/>

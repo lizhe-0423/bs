@@ -1,6 +1,7 @@
 package com.lizhi.bs.service.impl;
 
-import cn.hutool.crypto.digest.DigestUtil;
+import cn.dev33.satoken.stp.SaLoginModel;
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lizhi.bs.common.BaseResponse;
@@ -11,13 +12,12 @@ import com.lizhi.bs.exception.BusinessException;
 import com.lizhi.bs.request.LoginRequest;
 import com.lizhi.bs.response.LoginResponse;
 import com.lizhi.bs.service.UsersService;
-import com.lizhi.bs.mapper.UsersMapper;
+import com.lizhi.bs.mapper.mp.UsersMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import javax.xml.ws.Response;
 
 import static com.lizhi.bs.constants.LoginConstant.LOGIN_ADMIN_ROLE;
 import static com.lizhi.bs.constants.LoginConstant.LOGIN_READER_ROLE;
@@ -41,10 +41,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
             logger.info("service层:user login failed, userAccount cannot match userPassword");
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在或密码错误");
         }
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setUserId(users.getUserId());
-        loginResponse.setUserName(users.getUsername());
-        return ResultUtils.success(loginResponse);
+        return getSaTokenLogin(users);
     }
 
     @Override
@@ -54,9 +51,22 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
             logger.info("service层:user login failed, adminAccount cannot match userPassword");
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "管理员不存在或管理员密码错误");
         }
+        return getSaTokenLogin(users);
+    }
+
+    /**
+     * 获取Sa-Token登录信息
+     *
+     * @param users 用户信息
+     * @return Sa-Token登录信息
+     */
+    @NotNull
+    private BaseResponse<LoginResponse> getSaTokenLogin(Users users) {
+        StpUtil.login(users.getUserId(),new SaLoginModel().setTimeout(60 * 60 * 24 * 7L));
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setUserId(users.getUserId());
         loginResponse.setUserName(users.getUsername());
+        loginResponse.setToken(StpUtil.getTokenValue());
         return ResultUtils.success(loginResponse);
     }
 
@@ -101,6 +111,18 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
         Users userOne = this.getOne(queryWrapper);
         if (userOne == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在");
+        }
+        return ResultUtils.success(userOne);
+    }
+
+    @Override
+    public BaseResponse<Users> getAdminData(Users users) {
+        LambdaQueryWrapper<Users> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Users::getUserId, users.getUserId());
+        queryWrapper.eq(Users::getRole, LOGIN_ADMIN_ROLE);
+        Users userOne = this.getOne(queryWrapper);
+        if (userOne == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "管理员不存在");
         }
         return ResultUtils.success(userOne);
     }

@@ -11,7 +11,7 @@ import com.lizhi.bs.common.ErrorCode;
 import com.lizhi.bs.common.ResultUtils;
 import com.lizhi.bs.domain.BorrowRecords;
 import com.lizhi.bs.exception.BusinessException;
-import com.lizhi.bs.mapper.BorrowRecordsMapper;
+import com.lizhi.bs.mapper.mp.BorrowRecordsMapper;
 import com.lizhi.bs.service.BorrowRecordsService;
 import org.springframework.stereotype.Service;
 

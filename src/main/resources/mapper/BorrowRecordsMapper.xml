@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lizhi.bs.mapper.BorrowRecordsMapper">
+<mapper namespace="com.lizhi.bs.mapper.mp.BorrowRecordsMapper">
 
     <resultMap id="BaseResultMap" type="com.lizhi.bs.domain.BorrowRecords">
             <id property="borrowId" column="borrow_id" jdbcType="INTEGER"/>
