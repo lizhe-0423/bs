@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.lizhi.bs.common.BaseResponse;
 import com.lizhi.bs.domain.Users;
 import com.lizhi.bs.request.LoginRequest;
+import com.lizhi.bs.request.user.UserAddRequest;
 import com.lizhi.bs.response.LoginResponse;
 
 /**
@@ -59,4 +60,20 @@ public interface UsersService extends IService<Users> {
      * @return Users
      */
     BaseResponse<Users> getAdminData(Users users);
+
+    /**
+     * 修改用户信息
+     *
+     * @param users users
+     * @return String
+     */
+    BaseResponse<String> updateUser(Users users);
+
+    /**
+     * 添加用户
+     *
+     * @param request request
+     * @return String
+     */
+    BaseResponse<String> addBookUser(UserAddRequest request);
 }

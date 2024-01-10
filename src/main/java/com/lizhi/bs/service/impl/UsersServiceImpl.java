@@ -10,6 +10,7 @@ import com.lizhi.bs.common.ResultUtils;
 import com.lizhi.bs.domain.Users;
 import com.lizhi.bs.exception.BusinessException;
 import com.lizhi.bs.request.LoginRequest;
+import com.lizhi.bs.request.user.UserAddRequest;
 import com.lizhi.bs.response.LoginResponse;
 import com.lizhi.bs.service.UsersService;
 import com.lizhi.bs.mapper.mp.UsersMapper;
@@ -62,7 +63,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
      */
     @NotNull
     private BaseResponse<LoginResponse> getSaTokenLogin(Users users) {
-        StpUtil.login(users.getUserId(),new SaLoginModel().setTimeout(60 * 60 * 24 * 7L));
+        StpUtil.login(users.getUserId(), new SaLoginModel().setTimeout(60 * 60 * 24 * 7L));
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setUserId(users.getUserId());
         loginResponse.setUserName(users.getUsername());
@@ -119,12 +120,33 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
     public BaseResponse<Users> getAdminData(Users users) {
         LambdaQueryWrapper<Users> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Users::getUserId, users.getUserId());
-        queryWrapper.eq(Users::getRole, LOGIN_ADMIN_ROLE);
         Users userOne = this.getOne(queryWrapper);
         if (userOne == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "管理员不存在");
         }
         return ResultUtils.success(userOne);
+    }
+
+    @Override
+    public BaseResponse<String> updateUser(Users users) {
+        return null;
+    }
+
+    @Override
+    public BaseResponse<String> addBookUser(UserAddRequest request) {
+        logger.info("用户id{}service层:执行addBookUser()方法 request={}",StpUtil.getLoginId(),request);
+        Users users = new Users();
+        users.setUsername(request.getUsername());
+        users.setPassword(request.getPassword());
+        users.setRole(LOGIN_READER_ROLE);
+        users.setBookRuleId(1);
+        users.setEmail(request.getEmail());
+        users.setStatus(0);
+        if (this.save(users)) {
+            return ResultUtils.success("添加用户成功");
+        } else {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "添加用户失败");
+        }
     }
 }
 
