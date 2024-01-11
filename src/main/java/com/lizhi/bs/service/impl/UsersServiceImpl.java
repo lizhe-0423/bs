@@ -1,5 +1,6 @@
 package com.lizhi.bs.service.impl;
 
+import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -9,11 +10,12 @@ import com.lizhi.bs.common.ErrorCode;
 import com.lizhi.bs.common.ResultUtils;
 import com.lizhi.bs.domain.Users;
 import com.lizhi.bs.exception.BusinessException;
+import com.lizhi.bs.mapper.mp.UsersMapper;
 import com.lizhi.bs.request.LoginRequest;
 import com.lizhi.bs.request.user.UserAddRequest;
+import com.lizhi.bs.request.user.UserUpdatePwRequest;
 import com.lizhi.bs.response.LoginResponse;
 import com.lizhi.bs.service.UsersService;
-import com.lizhi.bs.mapper.mp.UsersMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -75,14 +77,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
      * 校验用户登录信息
      *
      * @param request 用户登录信息
-     * @return 用户信息
+     * @return 登录的用户信息
      */
     private Users getLoginInfo(LoginRequest request) {
         String username = request.getUsername();
         String password = request.getPassword();
         LambdaQueryWrapper<Users> usersLambdaQueryWrapper = new LambdaQueryWrapper<>();
         usersLambdaQueryWrapper.eq(Users::getUsername, username);
-        usersLambdaQueryWrapper.eq(Users::getPassword, password);
+        usersLambdaQueryWrapper.eq(Users::getPassword, SaSecureUtil.sha256(password));
         return this.baseMapper.selectOne(usersLambdaQueryWrapper);
     }
 
@@ -98,9 +100,18 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
     }
 
     @Override
-    public BaseResponse<String> updatePassword(Users users) {
-        if (this.updateById(users)) {
-            return ResultUtils.success("修改密码成功");
+    public BaseResponse<String> updatePassword(UserUpdatePwRequest request) {
+
+        Users byId = this.getById(request.getUserId());
+        if(byId.getPassword().equals(request.getOldPassword())){
+            Users toUsers = new Users();
+            toUsers.setUserId(request.getUserId());
+            toUsers.setPassword(SaSecureUtil.sha256(request.getNewPassword()));
+            if (this.updateById(toUsers)) {
+                return ResultUtils.success("修改密码成功");
+            }
+        }else {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "修改密码失败");
         }
         return null;
     }
@@ -134,10 +145,11 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
 
     @Override
     public BaseResponse<String> addBookUser(UserAddRequest request) {
-        logger.info("用户id{}service层:执行addBookUser()方法 request={}",StpUtil.getLoginId(),request);
+        logger.info("用户id{}service层:执行addBookUser()方法 request={}", StpUtil.getLoginId(), request);
         Users users = new Users();
         users.setUsername(request.getUsername());
-        users.setPassword(request.getPassword());
+        String encryptPassword = SaSecureUtil.sha256(request.getPassword());
+        users.setPassword(encryptPassword);
         users.setRole(LOGIN_READER_ROLE);
         users.setBookRuleId(1);
         users.setEmail(request.getEmail());

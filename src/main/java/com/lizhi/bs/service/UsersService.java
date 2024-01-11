@@ -5,6 +5,7 @@ import com.lizhi.bs.common.BaseResponse;
 import com.lizhi.bs.domain.Users;
 import com.lizhi.bs.request.LoginRequest;
 import com.lizhi.bs.request.user.UserAddRequest;
+import com.lizhi.bs.request.user.UserUpdatePwRequest;
 import com.lizhi.bs.response.LoginResponse;
 
 /**
@@ -40,10 +41,10 @@ public interface UsersService extends IService<Users> {
     /**
      * 修改密码
      *
-     * @param users users
+     * @param request 用户密码更新请求
      * @return String
      */
-    BaseResponse<String> updatePassword(Users users);
+    BaseResponse<String> updatePassword(UserUpdatePwRequest request);
 
     /**
      * 获取用户数据

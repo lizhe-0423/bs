@@ -3,11 +3,13 @@ package com.lizhi.bs.controller;
 import com.lizhi.bs.common.BaseResponse;
 import com.lizhi.bs.domain.Users;
 import com.lizhi.bs.request.LoginRequest;
+import com.lizhi.bs.request.user.UserUpdatePwRequest;
 import com.lizhi.bs.response.LoginResponse;
 import com.lizhi.bs.service.impl.UsersServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,13 +45,13 @@ public class UserLoginController {
     }
     /**
      * 修改密码
-     * @param users 用户信息
+     * @param request 更新用户密码信息
      * @return BaseResponse<String>
      */
     @PostMapping("/updatePassword")
-    public BaseResponse<String> updatePassword(@RequestBody Users users) {
-        logger.info("controller:Users={}",users);
-        return usersService.updatePassword(users);
+    public BaseResponse<String> updatePassword(@Validated @RequestBody UserUpdatePwRequest request) {
+        logger.info("controller:执行updatePassword方法，UserUpdatePwRequest={}",request);
+        return usersService.updatePassword(request);
     }
 
    /**
