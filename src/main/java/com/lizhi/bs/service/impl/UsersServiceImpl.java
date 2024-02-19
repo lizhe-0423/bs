@@ -4,7 +4,9 @@ import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lizhi.bs.common.BasePageRequest;
 import com.lizhi.bs.common.BaseResponse;
 import com.lizhi.bs.common.ErrorCode;
 import com.lizhi.bs.common.ResultUtils;
@@ -39,7 +41,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
 
     @Override
     public BaseResponse<LoginResponse> userLogin(LoginRequest request) {
-        Users users = getLoginInfo(request);
+        Users users = getLoginInfo(request, false);
         if (users == null || !users.getRole().equals(LOGIN_READER_ROLE)) {
             logger.info("service层:user login failed, userAccount cannot match userPassword");
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在或密码错误");
@@ -49,7 +51,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
 
     @Override
     public BaseResponse<LoginResponse> adminLogin(LoginRequest request) {
-        Users users = getLoginInfo(request);
+        Users users = getLoginInfo(request, true);
         if (users == null || !users.getRole().equals(LOGIN_ADMIN_ROLE)) {
             logger.info("service层:user login failed, adminAccount cannot match userPassword");
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "管理员不存在或管理员密码错误");
@@ -79,12 +81,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
      * @param request 用户登录信息
      * @return 登录的用户信息
      */
-    private Users getLoginInfo(LoginRequest request) {
+    private Users getLoginInfo(LoginRequest request, boolean isAdmin) {
         String username = request.getUsername();
         String password = request.getPassword();
         LambdaQueryWrapper<Users> usersLambdaQueryWrapper = new LambdaQueryWrapper<>();
         usersLambdaQueryWrapper.eq(Users::getUsername, username);
-        usersLambdaQueryWrapper.eq(Users::getPassword, SaSecureUtil.sha256(password));
+        if (!isAdmin) {
+            usersLambdaQueryWrapper.eq(Users::getPassword, SaSecureUtil.sha256(password));
+        }
         return this.baseMapper.selectOne(usersLambdaQueryWrapper);
     }
 
@@ -103,14 +107,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
     public BaseResponse<String> updatePassword(UserUpdatePwRequest request) {
 
         Users byId = this.getById(request.getUserId());
-        if(byId.getPassword().equals(request.getOldPassword())){
+        if (byId.getPassword().equals(request.getOldPassword())) {
             Users toUsers = new Users();
             toUsers.setUserId(request.getUserId());
             toUsers.setPassword(SaSecureUtil.sha256(request.getNewPassword()));
             if (this.updateById(toUsers)) {
                 return ResultUtils.success("修改密码成功");
             }
-        }else {
+        } else {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "修改密码失败");
         }
         return null;
@@ -158,6 +162,23 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users>
             return ResultUtils.success("添加用户成功");
         } else {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "添加用户失败");
+        }
+
+
+    }
+
+    @Override
+    public BaseResponse<Page<Users>> getBookUserList(BasePageRequest request) {
+        int pageNum = request.getPageNum();
+        int pageSize = request.getPageSize();
+        Page<Users> pageInfo = new Page<>(pageNum, pageSize);
+        LambdaQueryWrapper<Users> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Users::getRole, LOGIN_READER_ROLE);
+        Page<Users> usersPage = this.page(pageInfo, wrapper);
+        if (usersPage == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "获取借阅者列表失败");
+        } else {
+            return ResultUtils.success(usersPage);
         }
     }
 }

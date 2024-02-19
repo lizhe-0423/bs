@@ -6,10 +6,13 @@ import com.lizhi.bs.common.BaseResponse;
 import com.lizhi.bs.common.ErrorCode;
 import com.lizhi.bs.common.ResultUtils;
 import com.lizhi.bs.domain.AiIntelligent;
+import com.lizhi.bs.domain.Users;
 import com.lizhi.bs.exception.BusinessException;
 import com.lizhi.bs.manage.AiManage;
+import com.lizhi.bs.manage.RedisLimitManager;
 import com.lizhi.bs.mapper.mp.AiIntelligentMapper;
 import com.lizhi.bs.service.AiIntelligentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,29 +23,41 @@ import static com.lizhi.bs.constants.AiConstant.AI_BOOK_MODULE;
 
 
 /**
-* @author <a href="https://github.com/lizhe-0423">lizhi</a>
-* @description 针对表【ai_intelligent(AI智能表)】的数据库操作Service实现
-* @createDate 2024-01-05 10:42:22
-*/
+ * @author <a href="https://github.com/lizhe-0423">lizhi</a>
+ * @description 针对表【ai_intelligent(AI智能表)】的数据库操作Service实现
+ * @createDate 2024-01-05 10:42:22
+ */
 @Service
+@Slf4j
 public class AiIntelligentServiceImpl extends ServiceImpl<AiIntelligentMapper, AiIntelligent>
-    implements AiIntelligentService {
-
+        implements AiIntelligentService {
+    @Resource
+    private UsersServiceImpl usersService;
     @Resource
     private AiManage aiManage;
+    @Resource
+    private RedisLimitManager redisLimitManager;
+
 
     @Override
     public BaseResponse<String> aiIntelligent(AiIntelligent request) {
         String inputMessage = request.getInputMessage();
         if (inputMessage == null || inputMessage.isEmpty()) {
-            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"输入信息不能为空");
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "输入信息不能为空");
         }
-        //调用AI接口
-        String aiResult = aiManage.doChat(AI_BOOK_MODULE, inputMessage);
+
         Long userId = request.getUserId();
         if (userId == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR,"当前用户不存在");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "当前用户不存在");
         }
+
+        Users byIdUserInfo = usersService.getById(userId);
+        Integer bookRuleId = byIdUserInfo.getBookRuleId();
+
+
+        //调用AI接口
+        String aiResult = aiManage.doChat(AI_BOOK_MODULE, inputMessage);
+
         AiIntelligent aiIntelligent = new AiIntelligent();
         aiIntelligent.setInputMessage(inputMessage);
         aiIntelligent.setAiResult(aiResult);
@@ -58,8 +73,8 @@ public class AiIntelligentServiceImpl extends ServiceImpl<AiIntelligentMapper, A
         wrapper.orderByAsc(AiIntelligent::getCreateTime);
         wrapper.last("limit 5");
         List<AiIntelligent> list = this.list(wrapper);
-        if(list.isEmpty()){
-            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"当前用户无与AI聊天记录");
+        if (list.isEmpty()) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "当前用户无与AI聊天记录");
         }
         return ResultUtils.success(list);
     }

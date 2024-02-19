@@ -1,6 +1,8 @@
 package com.lizhi.bs.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lizhi.bs.common.BasePageRequest;
 import com.lizhi.bs.common.BaseResponse;
 import com.lizhi.bs.domain.Users;
 import com.lizhi.bs.request.LoginRequest;
@@ -77,4 +79,12 @@ public interface UsersService extends IService<Users> {
      * @return String
      */
     BaseResponse<String> addBookUser(UserAddRequest request);
+
+    /**
+     * 获取用户列表
+     *
+     * @param request request
+     * @return Users
+     */
+    BaseResponse<Page<Users>> getBookUserList(BasePageRequest request);
 }

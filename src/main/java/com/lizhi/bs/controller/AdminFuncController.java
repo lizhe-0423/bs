@@ -2,8 +2,12 @@ package com.lizhi.bs.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckRole;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lizhi.bs.common.BasePageRequest;
 import com.lizhi.bs.common.BaseResponse;
 import com.lizhi.bs.domain.BookType;
+import com.lizhi.bs.domain.Users;
+import com.lizhi.bs.manage.RedisLimitManager;
 import com.lizhi.bs.request.user.UserAddRequest;
 import com.lizhi.bs.service.impl.BookTypeServiceImpl;
 import com.lizhi.bs.service.impl.UsersServiceImpl;
@@ -12,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -28,12 +31,14 @@ import java.util.List;
 @Slf4j
 @SaCheckLogin
 @SaCheckRole("admin")
+@Validated
 public class AdminFuncController {
     private static final Logger logger = LoggerFactory.getLogger(AdminFuncController.class);
     @Resource
     private BookTypeServiceImpl bookTypeService;
     @Resource
     private UsersServiceImpl usersService;
+
 
     /**
      * 查询书籍类型的列表 用于添加图书中回显分类
@@ -52,9 +57,19 @@ public class AdminFuncController {
      * @param request UserAddRequest请求
      * @return R<String>
      */
-    @PostMapping("addBookUser")
-    public BaseResponse<String> addBookUser(@Validated @RequestBody UserAddRequest request) {
+    @PostMapping("/addBookUser")
+    public BaseResponse<String> addBookUser(@RequestBody @Validated UserAddRequest request) {
         return usersService.addBookUser(request);
+    }
+    /**
+     * 查询图书用户列表
+     *
+     * @param request BasePageRequest请求
+     * @return R<Page<Users>>
+     */
+    @PostMapping("/getBookUserList")
+    public BaseResponse<Page<Users>> getBookUserList(@RequestBody BasePageRequest request) {
+        return usersService.getBookUserList(request);
     }
 
 }

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lizhi.bs.common.BasePageRequest;
 import com.lizhi.bs.common.BaseResponse;
 import com.lizhi.bs.common.ErrorCode;
+import com.lizhi.bs.common.ResultUtils;
 import com.lizhi.bs.domain.Violation;
 import com.lizhi.bs.exception.BusinessException;
 import com.lizhi.bs.mapper.mp.ViolationMapper;
@@ -27,7 +28,6 @@ public class ViolationServiceImpl extends ServiceImpl<ViolationMapper, Violation
     @Override
     public BaseResponse<Page<Violation>> getViolation(BasePageRequest request) {
         int userId = request.getUserId();
-
         LambdaQueryWrapper<Violation> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Violation::getUsersId, userId);
         List<Violation> list = this.list(queryWrapper);

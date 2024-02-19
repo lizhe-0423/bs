@@ -16,7 +16,7 @@ spring:
     # Redis服务器连接密码（默认为空）
     # password:
     # 连接超时时间
-    timeout: 10s
+    timeout: 10
     lettuce:
       pool:
         # 连接池最大连接数

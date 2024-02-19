@@ -2,7 +2,7 @@ package com.lizhi.bs.request.user;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
@@ -20,13 +20,13 @@ public class UserAddRequest implements Serializable {
     /**
      * 用户名
      */
-    @NotEmpty
+    @NotEmpty(message = "用户名不能为空")
     private String username;
 
     /**
      * 密码
      */
-    @NotEmpty
+    @NotBlank(message = "密码不能为空")
     private String password;
 
     /**
